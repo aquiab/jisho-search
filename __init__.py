@@ -29,7 +29,7 @@ def filter_kana(text):
 
 
 def lookup_online(url, searchterm):
-    # searches based on an url and a term
+    # searches based on a url and a term
     QDesktopServices.openUrl(QUrl(url % searchterm))
 
 
