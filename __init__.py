@@ -1,6 +1,6 @@
 from anki import hooks
 from aqt import mw
-from aqt.qt import *
+from aqt.qt import QDesktopServices, QUrl
 
 QUESTION_KANJI_DETAILS_SEARCH_KEY = "8"
 # search Jisho for the details of kanji in the question field of this card
