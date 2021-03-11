@@ -41,6 +41,7 @@ def search_question_kanji():
 
 
 def add_lookup_action(view, menu):
+    # context menu, search for kanji info or for word definitions
     selected = view.page().selectedText()
     if not selected:
         return
