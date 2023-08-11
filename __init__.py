@@ -57,3 +57,4 @@ def add_lookup_action(view, menu):
 
 hooks.addHook("AnkiWebView.contextMenuEvent", add_lookup_action)
 hooks.addHook("reviewStateShortcuts", add_shortcuts)
+hooks.addHook("EditorWebView.contextMenuEvent", add_lookup_action)
