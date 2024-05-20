@@ -5,6 +5,7 @@ from aqt.qt import QDesktopServices, QUrl
 config = mw.addonManager.getConfig(__name__)
 
 QUESTION_KANJI_DETAILS_SEARCH_KEY = config["QUESTION_KANJI_DETAILS_SEARCH_KEY"]
+QUESTION_WORD_SEARCH_KEY = config["QUESTION_WORD_SEARCH_KEY"]
 # search Jisho for the details of kanji in the question field of this card
 
 SEARCH_URL = 'http://jisho.org/search/%s'
@@ -14,6 +15,7 @@ KANJI_TO_IGNORE = config["KANJI_TO_IGNORE"]
 def add_shortcuts(shortcuts):
     additions = (
         (QUESTION_KANJI_DETAILS_SEARCH_KEY, lambda: lookup_online(SEARCH_KANJI_DETAILS_URL, keep_kanji(mw.reviewer.card.q()))),
+        (QUESTION_WORD_SEARCH_KEY, lambda: lookup_online(SEARCH_URL, keep_kanji_kana(mw.reviewer.card.q()))),
     )
     shortcuts += additions
 
