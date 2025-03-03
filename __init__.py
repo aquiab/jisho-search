@@ -1,3 +1,4 @@
+import re
 from anki import hooks
 from aqt import mw
 from aqt.qt import QDesktopServices, QUrl
@@ -11,11 +12,20 @@ QUESTION_WORD_SEARCH_KEY = config["QUESTION_WORD_SEARCH_KEY"]
 SEARCH_URL = 'http://jisho.org/search/%s'
 SEARCH_KANJI_DETAILS_URL = 'http://jisho.org/search/%s%%20%%23kanji'
 KANJI_TO_IGNORE = config["KANJI_TO_IGNORE"]
+FIND_FRONT_VOCAB_REGEX = config["FIND_FRONT_VOCAB_REGEX"]
+
+def find_front_vocab(question):
+    match = re.search(FIND_FRONT_VOCAB_REGEX, question)
+    if FIND_FRONT_VOCAB_REGEX and match:
+        return match.group()
+    else:
+        return question
+
 
 def add_shortcuts(shortcuts):
     additions = (
-        (QUESTION_KANJI_DETAILS_SEARCH_KEY, lambda: lookup_online(SEARCH_KANJI_DETAILS_URL, keep_kanji(mw.reviewer.card.q()))),
-        (QUESTION_WORD_SEARCH_KEY, lambda: lookup_online(SEARCH_URL, keep_kanji_kana(mw.reviewer.card.q()))),
+        (QUESTION_KANJI_DETAILS_SEARCH_KEY, lambda: lookup_online(SEARCH_KANJI_DETAILS_URL, keep_kanji(find_front_vocab(mw.reviewer.card.question())))),
+        (QUESTION_WORD_SEARCH_KEY, lambda: lookup_online(SEARCH_URL, keep_kanji_kana(find_front_vocab(mw.reviewer.card.question())))),
     )
     shortcuts += additions
 
@@ -34,7 +44,7 @@ def keep_kanji(text):
 def keep_kanji_kana(text):
     # filters out everything but kanji and kana
     text = filter_kanji_to_ignore(text)
-    kanji_kana = [x for x in text if 19968 <= ord(x) <= 40895 or 12353 <= ord(x) <= 12438 or 12449 <= ord(x) <= 12538 or ord(x) == 12293]
+    kanji_kana = [x for x in text if 19968 <= ord(x) <= 40895 or 12353 <= ord(x) <= 12438 or 12449 <= ord(x) <= 12538 or ord(x) == 12293 or ord(x) == 12460]
     return ''.join(kanji_kana)
 
 def lookup_online(url, searchterm):
